@@ -2,7 +2,9 @@ import socket
 import threading
 import io, time
 from lxml import etree as et
+from app import PopUpMessage
 
+ppm = PopUpMessage()
 
 def processdata(data): #The data example is the actual xml schema
     root = et.fromstring(data) #once we get the root, we can iterate over the elements in the tree
@@ -43,6 +45,7 @@ class ClientThread(threading.Thread):
             if "\n".encode('utf-8') in chunk:
                 break
         processdata(data) #We can send the data to be processed however we need by defining the function above. 
+        ppm.popupMsg("Benign")
         print("Client d/c'ed")
 
 

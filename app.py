@@ -1,7 +1,18 @@
-from tkinter import Tk, StringVar, BOTH, W, E, messagebox as tkMessageBox
+from tkinter import Tk, StringVar, BOTH, W, E, messagebox as tkMessageBox, ttk
 from tkinter.ttk import Frame, Label,Entry,Button
 from lxml import etree as et
 
+
+class PopUpMessage:
+
+	def popupMsg(self, msg):
+		popup = Tk()
+		popup.wm_title("Alert!")
+		label = ttk.Label(popup, text=msg, font=("Helvetica", 10))
+		label.pack(side="top", fill="x", pady=10)
+		B1 = ttk.Button(popup, text="Okay", command = popup.destroy)
+		B1.pack()
+		popup.mainloop()
 
 class Application (Frame):
 
@@ -148,6 +159,8 @@ class Application (Frame):
 
 	def onOK(self):
 
+		popupMsg("Submitting data. Please wait...")
+
 		# dataset root element
 		dataset_root = et.Element('Dataset')
 		
@@ -229,12 +242,11 @@ class Application (Frame):
 
 		# exit program
 		self.quit()
+		
 
 def main():
 
 	root = Tk()
-
-	font = tkFont.Font(family="Helvetica",weight="bold")
 
 	root.geometry("400x320")
 	
