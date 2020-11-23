@@ -1,7 +1,7 @@
 import socket, time
 
 socket = socket.socket()
-socket.connect(("localhost", 54610))
+socket.connect(('71.156.28.25', 7123))
 file = open(r"schema.xml", "rb")
 stream = file.read(65536)
 i = 0

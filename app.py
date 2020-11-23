@@ -159,7 +159,7 @@ class Application (Frame):
 
 	def onOK(self):
 
-		popupMsg("Submitting data. Please wait...")
+		popupMsg("Data submitted")
 
 		# dataset root element
 		dataset_root = et.Element('Dataset')
@@ -250,7 +250,6 @@ def main():
 
 	root.geometry("400x320")
 	
-
 	app = Application(root)
 
 	root.mainloop()

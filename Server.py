@@ -51,7 +51,7 @@ class ClientThread(threading.Thread):
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-server_address = ('localhost', 54610)
+server_address = ('192.168.1.69', 7123)
 s.bind(server_address)
 
 print('Socket is listening...\n')
