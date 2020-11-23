@@ -1,18 +1,10 @@
-from tkinter import Tk, StringVar, BOTH, W, E, messagebox as tkMessageBox, ttk
+from tkinter import Tk, StringVar, BOTH, W, E, messagebox as tkMessageBox
 from tkinter.ttk import Frame, Label,Entry,Button
 from lxml import etree as et
+import socket
+import time
+import tkinter.font as tkFont
 
-
-class PopUpMessage:
-
-	def popupMsg(self, msg):
-		popup = Tk()
-		popup.wm_title("Alert!")
-		label = ttk.Label(popup, text=msg, font=("Helvetica", 10))
-		label.pack(side="top", fill="x", pady=10)
-		B1 = ttk.Button(popup, text="Okay", command = popup.destroy)
-		B1.pack()
-		popup.mainloop()
 
 class Application (Frame):
 
@@ -159,8 +151,6 @@ class Application (Frame):
 
 	def onOK(self):
 
-		popupMsg("Data submitted")
-
 		# dataset root element
 		dataset_root = et.Element('Dataset')
 		
@@ -234,22 +224,55 @@ class Application (Frame):
 		self.cancer_class.set("")
 
 		patient_xml = et.tostring(dataset_root)
-
 		with open("test.xml","wb") as f:
 			f.write(patient_xml)
+		file = open(r"test.xml", "rb")
+		stream = file.read(65536)
+		s = socket.socket()
+		s.connect(("98.168.143.109", 7123))
+		s.settimeout(30)
+		while stream:
+			flag = "myapp"
+			myFlag = str.encode(flag)
+			s.send(myFlag)
+			if(s.recv(32)):
+				s.send(stream)
+			data = s.recv(65536)
+			myData = data.decode("utf8")
+			print(myData)
+			result = 0
+			root = et.fromstring(myData)
+			for patient in root: 
+				result = patient.find('class').text
+			if int(result) == 2:
+				print("\nYOU'RE GONNA DIE")
+			else:
+				print("\nYou're probably gonna be ok.")
+			if "/Dataset".encode('utf-8') in data:
+				break
+		s.close()
+  
+
+		
+
+
+   
+   
 
 	def onCancel(self):
 
 		# exit program
 		self.quit()
-		
 
 def main():
 
 	root = Tk()
 
+	font = tkFont.Font(family="Helvetica",weight="bold")
+
 	root.geometry("400x320")
 	
+
 	app = Application(root)
 
 	root.mainloop()
