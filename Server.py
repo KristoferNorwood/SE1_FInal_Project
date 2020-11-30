@@ -6,9 +6,7 @@ from lxml import etree as et
 from lib2to3.fixer_util import String
 import random
 
-friendServers = [["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], 
-    ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], 
-    ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123]]
+friendServers = [["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123]]
 
 def getVerdict(diagArray):
     vote = 0
@@ -116,10 +114,10 @@ class ClientThread(threading.Thread):
             processServerData(data, self.inStream)
         print("Client d/c'ed")
         return
-
+        
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-server_address = ('192.168.1.69', 7123)
+server_address = ('192.168.0.43', 7123)
 s.bind(server_address)
 
 print('Socket is listening...\n')
@@ -132,3 +130,4 @@ while True:
     newthread = ClientThread(inbound_stream, address)
     newthread.start()
     newthread.join()
+    
