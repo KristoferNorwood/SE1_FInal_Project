@@ -251,14 +251,7 @@ class Application (Frame):
 			if "/Dataset".encode('utf-8') in data:
 				break
 		s.close()
-  
-
-		
-
-
    
-   
-
 	def onCancel(self):
 
 		# exit program
