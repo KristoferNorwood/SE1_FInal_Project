@@ -1,0 +1,17 @@
+<!-- <?xml version="1.0"?>
+<xsd:schema xmlns:xsd="" -->
+ 
+<Dataset>
+    <Patient id='1000025'>
+        <clump_thickness>5</clump_thickness>
+        <uniformity_cell_size>1</uniformity_cell_size>
+        <uniformity_cell_shape>1</uniformity_cell_shape>
+        <marginal_adhesion>1</marginal_adhesion>
+        <single_epithelial_cell_size>2</single_epithelial_cell_size>
+        <bare_nuclei>1</bare_nuclei>
+        <bland_chromatin>2</bland_chromatin>
+        <normal_nucleoli>2</normal_nucleoli>
+        <mitoses>1</mitoses>
+        <class>9</class>
+    </Patient>
+</Dataset>
