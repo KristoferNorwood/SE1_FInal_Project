@@ -250,9 +250,9 @@ class Application (Frame):
 				s.send(stream)
 			data = s.recv(65536)
 			myData = data.decode("utf-8")
-			print(stream)
+			print(myData)
 			result = 0
-			root = et.fromstring(stream)
+			root = et.fromstring(myData)
 			for patient in root: 
 				result = patient.find('class').text
 			if int(result) == 4:
