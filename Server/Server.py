@@ -8,6 +8,8 @@ import random
 
 friendServers = [["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123]]
 
+# friendServers = [["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123]]
+
 def getVerdict(diagArray):
     vote = 0
     vote1 = 0
@@ -66,7 +68,7 @@ def processClientData(data, inStream):
         while True:
             s.send(bytes(myRoot))
             incomingVote = s.recv(65536)
-            friendData = incomingVote.decode("utf8")
+            friendData = incomingVote.decode("utf-8")
             diagnosis.insert(i, getFriendDiagnosis(friendData))
             s.close()
             break
@@ -97,7 +99,7 @@ class ClientThread(threading.Thread):
         while True:
             
             chunk = self.inStream.recv(65536)
-            data += chunk.decode("utf8")
+            data += chunk.decode("utf-8")
             if "myapp".encode('utf-8') in chunk:
                 flag = True
                 data = ""
@@ -120,7 +122,7 @@ class ClientThread(threading.Thread):
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-server_address = ('192.168.0.43', 7123)
+server_address = ('192.168.1.69', 7123)
 s.bind(server_address)
 
 print('Socket is listening...\n')
@@ -133,4 +135,3 @@ while True:
     newthread = ClientThread(inbound_stream, address)
     newthread.start()
     newthread.join()
-    

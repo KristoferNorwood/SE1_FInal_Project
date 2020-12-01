@@ -1,10 +1,22 @@
-from tkinter import Tk, StringVar, BOTH, W, E, messagebox as tkMessageBox
+from tkinter import Tk, StringVar, BOTH, W, E, ttk
 from tkinter.ttk import Frame, Label,Entry,Button
 from lxml import etree as et
 import socket
 import time
-import tkinter.font as tkFont
 
+
+class PopUpMessage:
+	@staticmethod
+	def popupMsg(msg):
+		popup = Tk()
+		popup.wm_title("Diagnosis")
+		popup.geometry("250x100")
+		label = ttk.Label(popup, text=msg, font=("Helvetica", 10))
+		label.config(anchor="center")
+		label.pack(side="top", fill="x", pady=10)
+		B1 = ttk.Button(popup, text="Understood", command = popup.destroy)
+		B1.pack(expand=1)
+		popup.mainloop()
 
 class Application (Frame):
 
@@ -208,7 +220,6 @@ class Application (Frame):
 		# Values for cancer_class
 		cancer_class_elem.text = self.cancer_class.get()
 		
-
 		# Clear form after confirmation
 		self.id.set("")
 		self.clump_thickness.set("")
@@ -229,7 +240,7 @@ class Application (Frame):
 		file = open(r"test.xml", "rb")
 		stream = file.read(65536)
 		s = socket.socket()
-		s.connect(("98.168.143.109", 7123))
+		s.connect(("192.168.1.69", 7123))
 		s.settimeout(30)
 		while stream:
 			flag = "myapp"
@@ -238,26 +249,22 @@ class Application (Frame):
 			if(s.recv(32)):
 				s.send(stream)
 			data = s.recv(65536)
-			myData = data.decode("utf8")
-			print(myData)
+			myData = data.decode("utf-8")
+			print(stream)
 			result = 0
-			root = et.fromstring(myData)
+			root = et.fromstring(stream)
 			for patient in root: 
 				result = patient.find('class').text
 			if int(result) == 4:
-				print("\nYOU'RE GONNA DIE")
+				# print("\nYOU'RE GONNA DIE")
+				PopUpMessage.popupMsg("Diagnosis: Cancer...")
 			else:
-				print("\nYou're probably gonna be ok.")
+				# print("\nYou're probably gonna be ok.")
+				PopUpMessage.popupMsg("Diagnosis: Not cancer!")
 			if "/Dataset".encode('utf-8') in data:
+			# if "/Dataset".encode('utf-8') in stream:
 				break
-		s.close()
-  
-
-		
-
-
-   
-   
+		s.close()   
 
 	def onCancel(self):
 
@@ -267,14 +274,8 @@ class Application (Frame):
 def main():
 
 	root = Tk()
-
-	font = tkFont.Font(family="Helvetica",weight="bold")
-
 	root.geometry("400x320")
-	
-
 	app = Application(root)
-
 	root.mainloop()
 
 if __name__ == '__main__':
