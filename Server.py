@@ -6,7 +6,18 @@ from lxml import etree as et
 from lib2to3.fixer_util import String
 import random
 
-friendServers = [["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123]]
+logging.basicConfig(filename='example.log', level=logging.DEBUG)
+logging.debug('This message should go to the log file')
+logging.info('So should this')
+logging.warning('And this, too')
+
+# friendServers = [["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], 
+#     ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], 
+#     ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123], ["98.168.143.109", 7123]]
+
+friendServers = [["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], 
+    ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], 
+    ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123]]
 
 def getVerdict(diagArray):
     vote = 0
@@ -117,7 +128,7 @@ class ClientThread(threading.Thread):
         
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-server_address = ('192.168.0.43', 7123)
+server_address = ('192.168.1.69', 7123)
 s.bind(server_address)
 
 print('Socket is listening...\n')
