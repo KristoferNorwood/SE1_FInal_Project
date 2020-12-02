@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# -*- coding: UTF-8 -*-
+
 from tkinter import Tk, StringVar, BOTH, W, E, messagebox as tkMessageBox
 from tkinter.ttk import Frame, Label,Entry,Button
 from lxml import etree as et
@@ -8,12 +8,12 @@ import time
 import tkinter.font as tkFont
 from typing import List
 
-class guiApplication(object):
+class guiApplication(Frame):
 	def __init__(self, parent):
-		# self.parent = parent
-		Frame.__init__(parent)
 
-		
+		Frame.__init__(self,parent)
+
+		self.parent = parent
 		
 		# Form list defaults
 		self.id = StringVar()
@@ -29,6 +29,7 @@ class guiApplication(object):
 		self.cancer_class = StringVar()
 
 		self.initUI()
+		self.main()
 
 	def initUI(self):
 

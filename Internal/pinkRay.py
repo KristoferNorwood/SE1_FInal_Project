@@ -4,7 +4,8 @@ import pinkServer
 import logging
 from typing import List
 
-pinkServer.startServer()
+
+pinkServer.startServer
 guiApplication.main()
 
 def get_logger(name):

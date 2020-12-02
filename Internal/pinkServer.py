@@ -5,32 +5,30 @@ import threading
 import logging
 from typing import List
 
-class pinkServer(object):
+def startServer():
+	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+	server_address = ('192.168.0.43', 7123)
+	s.bind(server_address)
 
-	def startServer(self):
-		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-		server_address = ('192.168.0.43', 7123)
-		s.bind(server_address)
+	print('Socket is listening...\n')
+	#Every connection starts a new thread and the server continues to listen for new connections after each thread is started
+	while True:
+		flag = False
+		s.listen(5)
+		inbound_stream, address = s.accept()
+		inbound_stream.settimeout(15)
+		newthread = clientThread(inbound_stream, address)
+		newthread.start()
+		newthread.join()
+	
 
-		print('Socket is listening...\n')
-		#Every connection starts a new thread and the server continues to listen for new connections after each thread is started
-		while True:
-			flag = False
-			s.listen(5)
-			inbound_stream, address = s.accept()
-			inbound_stream.settimeout(15)
-			newthread = clientThread(inbound_stream, address)
-			newthread.start()
-			newthread.join()
-		
+# def processData(self, aThread : ClientThread, aInStream : socket, aAddress : socket) -> None:
+# 	pass
 
-	# def processData(self, aThread : ClientThread, aInStream : socket, aAddress : socket) -> None:
-	# 	pass
-
-	def __init__(self):
-		self._unnamed_logging_ : logging = None
-		self.startServer()
+# def __init__(self):
+# 	self._unnamed_logging_ : logging = None
+# 	self.startServer()
 
 		
 
