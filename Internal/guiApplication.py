@@ -8,13 +8,24 @@ import time
 import tkinter.font as tkFont
 from typing import List
 
+class PopUpMessage:
+    @staticmethod
+    def popupMsg(msg):
+        popup = Tk()
+        popup.wm_title("Diagnosis")
+        popup.geometry("250x100")
+        label = ttk.Label(popup, text=msg, font=("Helvetica", 10))
+        label.config(anchor="center")
+        label.pack(side="top", fill="x", pady=10)
+        B1 = ttk.Button(popup, text="Understood", command = popup.destroy)
+        B1.pack(expand=1)
+        popup.mainloop()
+
 class guiApplication(object):
 	def __init__(self, parent):
 		# self.parent = parent
 		Frame.__init__(parent)
 
-		
-		
 		# Form list defaults
 		self.id = StringVar()
 		self.clump_thickness = StringVar()

@@ -6,13 +6,13 @@ import threading
 from typing import List
     
 def __init__(self, inStream, address):
-        threading.Thread.__init__(self)
-        self.csocket = address
-        self.inStream = inStream
-        self.chunk
-        self.data
-        self.flag
-        print("New connection added: ", inStream)
+    threading.Thread.__init__(self)
+    self.csocket = address
+    self.inStream = inStream
+    self.chunk
+    self.data
+    self.flag
+    print("New connection added: ", inStream)
 
 #put processClientData.diagnose(data, inStream)
 def clientData(self, data, inStream):
