@@ -10,6 +10,13 @@ friendServers = [["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25"
 
 # friendServers = [["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123]]
 
+logging.basicConfig(filename="newfile.log", format='%(asctime)s %(message)s', filemode='w')
+
+#Creating an object 
+logger=logging.getLogger()
+
+logger.setLevel(logging.INFO)
+
 def getVerdict(diagArray):
     vote = 0
     vote1 = 0
@@ -50,6 +57,7 @@ def processServerData(data, inStream):
     for patient in root:
         patient.find('class').text = str(diagnosis)
     myRoot = et.tostring(root)
+    logging.info(myRoot)
     inStream.send(bytes(myRoot))
     inStream.close()
     
@@ -70,6 +78,7 @@ def processClientData(data, inStream):
             incomingVote = s.recv(65536)
             friendData = incomingVote.decode("utf-8")
             diagnosis.insert(i, getFriendDiagnosis(friendData))
+            logger.info("Incoming vote :" + i + " data is: \n friendData")
             s.close()
             break
     myDiag = intelligentDiagnosisModel(data)
@@ -91,9 +100,11 @@ class ClientThread(threading.Thread):
         self.csocket = address
         self.inStream = inStream
         print("New connection added: ", inStream)
+        logger.info("New connection added: ", inStream)
 
     def run(self):
         print("connection from : ", self.csocket)
+        logger.info("connection from : ", self.csocket)
         data = ""
         flag = False
         while True:
@@ -126,6 +137,7 @@ server_address = ('192.168.1.69', 7123)
 s.bind(server_address)
 
 print('Socket is listening...\n')
+logger.info("Socket is listening...\n")
 #Every connection starts a new thread and the server continues to listen for new connections after each thread is started
 while True:
     flag = False
