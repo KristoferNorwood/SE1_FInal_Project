@@ -10,11 +10,13 @@ friendServers = [["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25"
 
 # friendServers = [["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123], ["192.168.1.69", 7123]]
 
+# Set logging basic configuration info here
 logging.basicConfig(filename="newfile.log", format='%(asctime)s %(message)s', filemode='w')
 
-#Creating an object 
+#Creating a logging object 
 logger=logging.getLogger()
-
+# Setting the logger level. At logging.INFO, it will not print any DEBUG messages.
+# Only Warning, Error and INFO
 logger.setLevel(logging.INFO)
 
 def getVerdict(diagArray):
