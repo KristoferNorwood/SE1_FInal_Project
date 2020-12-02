@@ -45,9 +45,9 @@ def serverData(self, data, inStream):
 def run(self):
     self.getData()
     if self.flag == True:
-        self.clientData.clientDiag(self.data, self.inStream)
+        processClientData.clientDiag(self.data, self.inStream)
     else: 
-        self.serverData.diagnose(self.data, self.inStream)
+        processServerData.diagnose(self.data, self.inStream)
     print("Client d/c'ed")
     return
 

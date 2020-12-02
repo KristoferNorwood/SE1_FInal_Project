@@ -22,7 +22,7 @@ def startServer():
 		newthread.start()
 		newthread.join()
 	
-
+startServer()
 # def processData(self, aThread : ClientThread, aInStream : socket, aAddress : socket) -> None:
 # 	pass
 

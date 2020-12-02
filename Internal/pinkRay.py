@@ -5,8 +5,8 @@ import logging
 from typing import List
 
 
-pinkServer.startServer
-guiApplication.main()
+pinkServer.startServer()
+# guiApplication.main()
 
 def get_logger(name):
     log_format = '%(asctime)s  %(name)8s  %(levelname)5s  %(message)s'
