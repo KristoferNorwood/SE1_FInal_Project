@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import socket
-import clientThread
+from clientThread import clientThreader 
 import threading
 import logging
 from typing import List
@@ -18,7 +18,7 @@ def startServer():
 		s.listen(5)
 		inbound_stream, address = s.accept()
 		inbound_stream.settimeout(15)
-		newthread = clientThread(inbound_stream, address)
+		newthread = clientThreader(inbound_stream, address)
 		newthread.start()
 		newthread.join()
 	
