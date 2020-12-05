@@ -22,6 +22,7 @@ logger.setLevel(logging.INFO)
 def getVerdict(diagArray):
     vote = 0
     vote1 = 0
+    diagArray.get
     for num in diagArray:
         if num == 2:
             vote += 1
@@ -50,51 +51,84 @@ def intelligentDiagnosisModel(data):
             print(attributes.tag + " " + attributes.text) 
     diagnosis = random.randrange(2, 6, 2)
     print("\nDiagnosing patient \n")
+    logger.info("\nDiagnosing patient \n")
     return diagnosis
 
-def processServerData(data, inStream):
-    print("Printing data received from the other Client/Servers : \n")
-    root = et.fromstring(data) 
-    diagnosis = intelligentDiagnosisModel(data)
+def checkData(data):
+    #validate the data
+    i = 0
+    flag = True
+    file = open(r"schema.xml", "rb")
+    mydata = file.read(65536)
+    myroot = et.fromstring(mydata)
+    root = et.fromstring(data) # The Dataset
+    if myroot.tag == root.tag:
+        mynothingvariable = "Don't use this"
+    else:
+        flag = False
+    for i in range(10):
+        if root[0][i].text == myroot[0][i].text:
+            continue
+        else:
+            flag = False
+            break
     for patient in root:
-        patient.find('class').text = str(diagnosis)
-    myRoot = et.tostring(root)
-    logging.info(myRoot)
-    inStream.send(bytes(myRoot))
-    inStream.close()
+        if int(patient.find('class').text) == 2 or int(patient.find('class').text) == 4:
+            break
+        else:
+            flag = False
+    return flag
+
+def processServerData(data, inStream):
+    if checkData(data):
+        print("Printing data received from the other Client/Servers : \n")
+        logger.info("Printing data received from the other Client/Servers : \n")
+        root = et.fromstring(data) 
+        diagnosis = intelligentDiagnosisModel(data)
+        for patient in root:
+            patient.find('class').text = str(diagnosis)
+        myRoot = et.tostring(root)
+        logging.info(myRoot)
+        inStream.send(bytes(myRoot))
+        inStream.close()
+    else:
+        print("FLAG RETURNED FALSE")
     
 
 def processClientData(data, inStream): 
-    root = et.fromstring(data) 
-    i = 0
-    j = 0
-    diagnosis = []
-    myRoot = et.tostring(root)
-    diagnosis.insert(3, 29)
-    for i in range(12):
-        s = socket.socket()
-        s.settimeout(30)
-        s.connect((friendServers[i][j],friendServers[i][j+1]))
-        while True:
-            s.send(bytes(myRoot))
-            incomingVote = s.recv(65536)
-            friendData = incomingVote.decode("utf-8")
-            diagnosis.insert(i, getFriendDiagnosis(friendData))
-            logger.info("Incoming vote :" + i + " data is: \n friendData")
-            s.close()
-            break
-    myDiag = intelligentDiagnosisModel(data)
-    diagnosis.insert(12, myDiag)
-    verdict = getVerdict(diagnosis)
-    if verdict:
-        myDiag = 2
+    if checkData(data):
+        root = et.fromstring(data) 
+        i = 0
+        j = 0
+        diagnosis = []
+        myRoot = et.tostring(root)
+        diagnosis.insert(3, 29)
+        for i in range(12):
+            s = socket.socket()
+            s.settimeout(30)
+            s.connect((friendServers[i][j],friendServers[i][j+1]))
+            while True:
+                s.send(bytes(myRoot))
+                incomingVote = s.recv(65536)
+                friendData = incomingVote.decode("utf-8")
+                diagnosis.insert(i, getFriendDiagnosis(friendData))
+                logger.info("Incoming vote :" + i + " data is: \n friendData")
+                s.close()
+                break
+        myDiag = intelligentDiagnosisModel(data)
+        diagnosis.insert(12, myDiag)
+        verdict = getVerdict(diagnosis)
+        if verdict:
+            myDiag = 2
+        else:
+            myDiag = 4
+        for patient in root:
+            patient.find('class').text = str(myDiag)
+        myRoot = et.tostring(root)
+        inStream.send(bytes(myRoot))
+        inStream.close()
     else:
-        myDiag = 4
-    for patient in root:
-        patient.find('class').text = str(myDiag)
-    myRoot = et.tostring(root)
-    inStream.send(bytes(myRoot))
-    inStream.close()
+        print("FLAG RETURNED FALSE")
     
 class ClientThread(threading.Thread):
     def __init__(self, inStream, address):
@@ -102,14 +136,15 @@ class ClientThread(threading.Thread):
         self.csocket = address
         self.inStream = inStream
         print("New connection added: ", inStream)
-        logger.info("New connection added: ", inStream)
+        #logger.info("New connection added: ", inStream)
 
     def run(self):
         print("connection from : ", self.csocket)
-        logger.info("connection from : ", self.csocket)
+        #logger.info("connection from : ", self.csocket)
         data = ""
         flag = False
         while True:
+            
             chunk = self.inStream.recv(65536)
             data += chunk.decode("utf-8")
             if "myapp".encode('utf-8') in chunk:
@@ -123,26 +158,25 @@ class ClientThread(threading.Thread):
                 break
             if "/Dataset".encode('utf-8') in chunk:
                 break
-            
         if flag == True:
             processClientData(data, self.inStream)
         else: 
             processServerData(data, self.inStream)
         print("Client d/c'ed")
+        logger.info("Client Disconnected\n")
         return # are you returning at the end of the thread? 
         
 
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-server_address = ('192.168.1.69', 7123)
+server_address = ('192.168.0.43', 7123)
 s.bind(server_address)
 
 print('Socket is listening...\n')
 logger.info("Socket is listening...\n")
 #Every connection starts a new thread and the server continues to listen for new connections after each thread is started
 while True:
-    flag = False
     s.listen(5)
     inbound_stream, address = s.accept()
     inbound_stream.settimeout(15)

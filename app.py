@@ -168,11 +168,12 @@ class Application(Frame):
 		# patient root element
 		patient_root = et.SubElement(dataset_root, 'Patient')
 		# validate error message
-		if (self.id.get() == '' and not errorsFound):
+		if ( (self.id.get() == '' or not self.id.get().isdigit() ) and not errorsFound):
 			PopUpMessage.errorMsg("Input a numeric Patient value")
 			errorsFound = True
 		# Values for patient id
 		patient_root.set('id', self.id.get())
+
 
 		# for item in app.grid_slaves():
 		for i in range(1,10):
