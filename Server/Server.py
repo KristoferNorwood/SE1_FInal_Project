@@ -110,7 +110,6 @@ class ClientThread(threading.Thread):
         data = ""
         flag = False
         while True:
-            
             chunk = self.inStream.recv(65536)
             data += chunk.decode("utf-8")
             if "myapp".encode('utf-8') in chunk:
@@ -124,6 +123,7 @@ class ClientThread(threading.Thread):
                 break
             if "/Dataset".encode('utf-8') in chunk:
                 break
+            
         if flag == True:
             processClientData(data, self.inStream)
         else: 
