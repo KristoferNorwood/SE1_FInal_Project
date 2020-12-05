@@ -218,7 +218,7 @@ class guiApplication(Frame):
 		# Subtag cancer_class inside of root element Patient
 		cancer_class_elem = et.SubElement(patient_root, 'class')
 		# Values for cancer_class
-		cancer_class_elem.text = self.cancer_class.get()
+		# cancer_class_elem.text = self.cancer_class.get()
 		
 
 		# Clear form after confirmation
@@ -233,7 +233,7 @@ class guiApplication(Frame):
 		self.bland_chromatin.set("")
 		self.normal_nucleoli.set("")
 		self.mitoses.set("")
-		self.cancer_class.set("")
+		# self.cancer_class.set("")
 
 		patient_xml = et.tostring(dataset_root)
 		with open("test.xml","wb") as f:
@@ -257,9 +257,9 @@ class guiApplication(Frame):
 			for patient in root: 
 				result = patient.find('class').text
 			if int(result) == 2:
-				print("\nYOU'RE GONNA DIE")
+				print("\nCancer")
 			else:
-				print("\nYou're probably gonna be ok.")
+				print("\nNot Cancer.")
 			if "/Dataset".encode('utf-8') in data:
 				break
 		s.close()

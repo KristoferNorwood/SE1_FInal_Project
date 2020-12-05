@@ -1,31 +1,39 @@
 #!/usr/bin/python
-# -*- coding: UTF-8 -*-
-from tkinter import Tk, StringVar, BOTH, W, E, messagebox as tkMessageBox
+from tkinter import Tk, StringVar, BOTH, W, E, ttk
 from tkinter.ttk import Frame, Label,Entry,Button
 from lxml import etree as et
 import socket
 import time
 import tkinter.font as tkFont
 from typing import List
+import pinkServer
+import processClientData
+
 
 class PopUpMessage:
-    @staticmethod
-    def popupMsg(msg):
-        popup = Tk()
-        popup.wm_title("Diagnosis")
-        popup.geometry("250x100")
-        label = ttk.Label(popup, text=msg, font=("Helvetica", 10))
-        label.config(anchor="center")
-        label.pack(side="top", fill="x", pady=10)
-        B1 = ttk.Button(popup, text="Understood", command = popup.destroy)
-        B1.pack(expand=1)
-        popup.mainloop()
+	@staticmethod
+	def popupMsg(cancer):
+		popup = Tk()
+		popup.wm_title("Diagnosis")
+		popup.geometry("250x100")
+		if(cancer):
+			msg = 'Sorry to inform you the diagnosis is Cancer'
+		else:
+			msg = 'Happy to inform you the diagnosis is non-cancerous'
+		label = ttk.Label(popup, text=msg, font=("Helvetica", 10))
+		label.config(anchor="center")
+		label.pack(side="top", fill="x", pady=10)
+		B1 = ttk.Button(popup, text="Understood", command = popup.destroy)
+		B1.pack(expand=1)
+		popup.mainloop()
 
 class guiApplication(Frame):
 	def __init__(self, parent):
-		# self.parent = parent
-		Frame.__init__(parent)
 
+		Frame.__init__(self,parent)
+
+		self.parent = parent
+		
 		# Form list defaults
 		self.id = StringVar()
 		self.clump_thickness = StringVar()
@@ -40,6 +48,7 @@ class guiApplication(Frame):
 		self.cancer_class = StringVar()
 
 		self.initUI()
+		# self.main()
 
 	def initUI(self):
 
@@ -218,7 +227,7 @@ class guiApplication(Frame):
 		# Subtag cancer_class inside of root element Patient
 		cancer_class_elem = et.SubElement(patient_root, 'class')
 		# Values for cancer_class
-		cancer_class_elem.text = self.cancer_class.get()
+		# cancer_class_elem.text = self.cancer_class.get()
 		
 
 		# Clear form after confirmation
@@ -233,36 +242,39 @@ class guiApplication(Frame):
 		self.bland_chromatin.set("")
 		self.normal_nucleoli.set("")
 		self.mitoses.set("")
-		self.cancer_class.set("")
+		# self.cancer_class.set("")
 
 		patient_xml = et.tostring(dataset_root)
 		with open("test.xml","wb") as f:
 			f.write(patient_xml)
 		file = open(r"test.xml", "rb")
 		stream = file.read(65536)
-		s = socket.socket()
-		s.connect(("98.168.143.109", 7123))
-		s.settimeout(30)
-		while stream:
-			flag = "myapp"
-			myFlag = str.encode(flag)
-			s.send(myFlag)
-			if(s.recv(32)):
-				s.send(stream)
-			data = s.recv(65536)
-			myData = data.decode("utf8")
-			print(myData)
-			result = 0
-			root = et.fromstring(myData)
-			for patient in root: 
-				result = patient.find('class').text
-			if int(result) == 2:
-				print("\nYOU'RE GONNA DIE")
-			else:
-				print("\nYou're probably gonna be ok.")
-			if "/Dataset".encode('utf-8') in data:
-				break
-		s.close()
+		cancer = processClientData.clientDiag(stream)
+		PopUpMessage.popupMsg(cancer)
+
+		# s = socket.socket()
+		# s.connect(("98.168.143.109", 7123))
+		# s.settimeout(30)
+		# while stream:
+		# 	flag = "myapp"
+		# 	myFlag = str.encode(flag)
+		# 	s.send(myFlag)
+		# 	if(s.recv(32)):
+		# 		s.send(stream)
+		# 	data = s.recv(65536)
+		# 	myData = data.decode("utf8")
+		# 	print(myData)
+		# 	result = 0
+		# 	root = et.fromstring(myData)
+		# 	for patient in root: 
+		# 		result = patient.find('class').text
+		# 	if int(result) == 2:
+		# 		print("\nYOU'RE GONNA DIE")
+		# 	else:
+		# 		print("\nYou're probably gonna be ok.")
+		# 	if "/Dataset".encode('utf-8') in data:
+		# 		break
+		# s.close()
    
 	def onCancel(self):
 
@@ -270,10 +282,18 @@ class guiApplication(Frame):
 		self.quit()
 
 def main():
+
 	root = Tk()
+
+	font = tkFont.Font(family="Helvetica",weight="bold")
+
 	root.geometry("400x320")
+	
+
 	app = guiApplication(root)
+
 	root.mainloop()
+
 
 if __name__ == '__main__':
 	main ()
