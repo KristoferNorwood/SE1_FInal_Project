@@ -5,6 +5,7 @@ from typing import List
 from lxml import etree as et
 import logging
 
+
 def diagnose(data, inStream):
 	#replace with intelligentModel.diagnose or 
 	#whatever the class above the intelliImplementor is

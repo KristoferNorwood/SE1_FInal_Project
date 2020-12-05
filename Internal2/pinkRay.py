@@ -2,33 +2,17 @@
 import guiApplication
 import pinkServer
 import logging
+import pinkServer
 from typing import List
+import threading
 
+class clientThreader(threading.Thread):
 
-pinkServer.startServer()
-# guiApplication.main()
+    def __init__(self):
+        threading.Thread.__init__(self)
 
-def get_logger(name):
-    log_format = '%(asctime)s  %(name)8s  %(levelname)5s  %(message)s'
-    logging.basicConfig(level=logging.INFO,
-                        format=log_format,
-                        filename='Team3Log.log',
-                        filemode='a')
-    console = logging.StreamHandler()
-    console.setLevel(logging.DEBUG)
-    console.setFormatter(logging.Formatter(log_format))
-    logging.getLogger(name).addHandler(console)
-    return logging.getLogger(name)
-
-# class pinkRay(object):
-# 	# def startSystem(self) -> None:
-# 		pass
-
-# 	# def __init__(self):
-# 		self.___gui : guiApplication = None
-# 		self.___server : pinkServer = None
-# 		self.___pinkLogger : logging = None
-# 		self._unnamed_logging_ : logging = None
-# 		self._unnamed_guiApplication_ : guiApplication = None
-# 		self._unnamed_pinkServer_ : pinkServer = None
-
+    def run(self):
+        myLogger = logging.getLogger('myLogger')
+        # myLogger.info('Server Started')
+        pinkServer.startServer
+        return

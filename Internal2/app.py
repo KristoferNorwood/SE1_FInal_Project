@@ -9,6 +9,7 @@ from typing import List
 import pinkServer
 import processClientData
 import logging
+import pinkRay
 
 
 class PopUpMessage:
@@ -228,9 +229,8 @@ class guiApplication(Frame):
 		# Subtag cancer_class inside of root element Patient
 		cancer_class_elem = et.SubElement(patient_root, 'class')
 		# Values for cancer_class
-		# cancer_class_elem.text = self.cancer_class.get()
+		cancer_class_elem.text = self.cancer_class.get()
 		
-
 		# Clear form after confirmation
 		self.id.set("")
 		self.clump_thickness.set("")
@@ -243,7 +243,7 @@ class guiApplication(Frame):
 		self.bland_chromatin.set("")
 		self.normal_nucleoli.set("")
 		self.mitoses.set("")
-		# self.cancer_class.set("")
+		self.cancer_class.set("")
 
 		patient_xml = et.tostring(dataset_root)
 		with open("test.xml","wb") as f:
@@ -253,29 +253,6 @@ class guiApplication(Frame):
 		cancer = processClientData.clientDiag(stream)
 		PopUpMessage.popupMsg(cancer)
 
-		# s = socket.socket()
-		# s.connect(("98.168.143.109", 7123))
-		# s.settimeout(30)
-		# while stream:
-		# 	flag = "myapp"
-		# 	myFlag = str.encode(flag)
-		# 	s.send(myFlag)
-		# 	if(s.recv(32)):
-		# 		s.send(stream)
-		# 	data = s.recv(65536)
-		# 	myData = data.decode("utf8")
-		# 	print(myData)
-		# 	result = 0
-		# 	root = et.fromstring(myData)
-		# 	for patient in root: 
-		# 		result = patient.find('class').text
-		# 	if int(result) == 2:
-		# 		print("\nYOU'RE GONNA DIE")
-		# 	else:
-		# 		print("\nYou're probably gonna be ok.")
-		# 	if "/Dataset".encode('utf-8') in data:
-		# 		break
-		# s.close()
    
 	def onCancel(self):
 
@@ -301,6 +278,9 @@ def main():
 	root = Tk()
 	font = tkFont.Font(family="Helvetica",weight="bold")
 	root.geometry("400x320")
+	newThread = pinkRay
+	newThread.start()
+	newThread.join()
 	app = guiApplication(root)
 	root.mainloop()
 
