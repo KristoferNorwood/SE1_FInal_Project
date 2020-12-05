@@ -21,8 +21,7 @@ def startServer():
 		newthread = clientThreader(inbound_stream, address)
 		newthread.start()
 		newthread.join()
-	
-startServer()
+	return
 # def processData(self, aThread : ClientThread, aInStream : socket, aAddress : socket) -> None:
 # 	pass
 

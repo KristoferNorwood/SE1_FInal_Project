@@ -282,16 +282,11 @@ class guiApplication(Frame):
 		self.quit()
 
 def main():
-
+	# pinkServer.startServer()
 	root = Tk()
-
 	font = tkFont.Font(family="Helvetica",weight="bold")
-
 	root.geometry("400x320")
-	
-
 	app = guiApplication(root)
-
 	root.mainloop()
 
 
