@@ -5,6 +5,7 @@ import intelligentModel
 import clientThread
 from lxml import etree as et
 from typing import List
+import logging
 
 # def __init__(self, data, inStream):
 # 	super().__init__()
@@ -19,6 +20,7 @@ from typing import List
 # 	self.diagnose()
 
 def clientDiag(data):
+	myLogger = logging.getLogger('myLogger')
 	friendServers = [["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], 
 		["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], 
 		["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123]]
@@ -42,6 +44,10 @@ def clientDiag(data):
 	myDiag = intelligentModel(data)
 	diagnosis.insert(12, myDiag)
 	verdict = getVerdict(diagnosis)
+	if(verdict):
+		myLogger.info('result of intelligent model is cancer')
+	else:
+		myLogger.info('result of the intelligent model is not cancer')
 	return verdict
 	# verdict = getVerdict(diagnosis)
 	# if verdict:
