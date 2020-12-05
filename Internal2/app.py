@@ -6,7 +6,7 @@ import socket
 import time
 import tkinter.font as tkFont
 from typing import List
-import pinkServer
+# import pinkServer
 import processClientData
 import logging
 
@@ -46,10 +46,8 @@ class guiApplication(Frame):
 		self.bland_chromatin = StringVar()
 		self.normal_nucleoli = StringVar()
 		self.mitoses = StringVar()
-		self.cancer_class = StringVar()
 
 		self.initUI()
-		# self.main()
 
 	def initUI(self):
 
@@ -73,8 +71,7 @@ class guiApplication(Frame):
 		self.rowconfigure (7, pad=3)
 		self.rowconfigure (8, pad=3)
 		self.rowconfigure (9, pad=3)
-		self.rowconfigure (10, pad=3)
-		self.rowconfigure (11, pad=30)
+		self.rowconfigure (10, pad=30)
 
 		# Patient ID Label
 		id_text = Label(self,text="id: ", font="Mono 10 bold")
@@ -154,14 +151,6 @@ class guiApplication(Frame):
 		# mitoses form
 		mitoses_form = Entry(self,width=30,textvariable=self.mitoses, font="Mono 10 bold")
 		mitoses_form.grid(row=9, column = 1)
-		
-		# cancer_class_text
-		cancer_class_text = Label(self, text="class: ", font="Mono 10 bold")
-		cancer_class_text.grid(row=10, column = 0, sticky=W)
-		
-		# cancer_class form
-		cancer_class_form = Entry(self,width=30,textvariable=self.cancer_class, font="Mono 10 bold")
-		cancer_class_form.grid(row=10, column = 1)
 
 		# create OK button
 		button1 = Button (self, text="OK", command=self.onOK )
@@ -228,7 +217,7 @@ class guiApplication(Frame):
 		# Subtag cancer_class inside of root element Patient
 		cancer_class_elem = et.SubElement(patient_root, 'class')
 		# Values for cancer_class
-		# cancer_class_elem.text = self.cancer_class.get()
+		cancer_class_elem.text = ""
 		
 
 		# Clear form after confirmation
@@ -243,7 +232,6 @@ class guiApplication(Frame):
 		self.bland_chromatin.set("")
 		self.normal_nucleoli.set("")
 		self.mitoses.set("")
-		# self.cancer_class.set("")
 
 		patient_xml = et.tostring(dataset_root)
 		with open("test.xml","wb") as f:
@@ -252,30 +240,6 @@ class guiApplication(Frame):
 		stream = file.read(65536)
 		cancer = processClientData.clientDiag(stream)
 		PopUpMessage.popupMsg(cancer)
-
-		# s = socket.socket()
-		# s.connect(("98.168.143.109", 7123))
-		# s.settimeout(30)
-		# while stream:
-		# 	flag = "myapp"
-		# 	myFlag = str.encode(flag)
-		# 	s.send(myFlag)
-		# 	if(s.recv(32)):
-		# 		s.send(stream)
-		# 	data = s.recv(65536)
-		# 	myData = data.decode("utf8")
-		# 	print(myData)
-		# 	result = 0
-		# 	root = et.fromstring(myData)
-		# 	for patient in root: 
-		# 		result = patient.find('class').text
-		# 	if int(result) == 2:
-		# 		print("\nYOU'RE GONNA DIE")
-		# 	else:
-		# 		print("\nYou're probably gonna be ok.")
-		# 	if "/Dataset".encode('utf-8') in data:
-		# 		break
-		# s.close()
    
 	def onCancel(self):
 
@@ -296,8 +260,7 @@ def get_logger(name):
 
 def main():
 	myLogger = get_logger('myLogger')
-	pinkServer.startServer()
-	myLogger.info('Pink Ray Ready to Serve')
+	# myLogger.info('Pink Ray Ready to Serve')
 	root = Tk()
 	font = tkFont.Font(family="Helvetica",weight="bold")
 	root.geometry("400x320")

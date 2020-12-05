@@ -19,7 +19,7 @@ class clientThreader(threading.Thread):
         data = ''
         while True:
             chunk = self.inStream.recv(65536)
-            data += self.chunk.decode("utf8")
+            data += chunk.decode("utf-8")
             if not data:
                 print('Bye')
                 break
@@ -27,24 +27,12 @@ class clientThreader(threading.Thread):
                 break
         return data
 
-    def serverData(self, data, inStream):
+    def serverData(data, inStream):
         processServerData(data, inStream)
         return
 
     def run(self):
-        data = getData()
+        data = self.getData()
         processServerData.diagnose(data, self.inStream)
         print("Client d/c'ed")
         return
-
-
-        # def __init__(self):
-        # 	self.___data : str = None
-        # 	self.___csocket : socket = None
-        # 	self.___inStream : socket = None
-        # 	self.___chunk : bytes = None
-        # 	self._unnamed_processClientData_ : processClientData = None
-        # 	self._unnamed_pinkServer_ : pinkServer = None
-        # 	self._unnamed_exceptions_ : exceptions = None
-        # 	self._unnamed_processServerData_ : processServerData = None
-        # 	self._unnamed_socket_ : socket = None

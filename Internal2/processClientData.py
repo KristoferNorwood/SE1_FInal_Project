@@ -21,9 +21,10 @@ import logging
 
 def clientDiag(data):
 	myLogger = logging.getLogger('myLogger')
-	friendServers = [["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], 
+	friendServers = [["71.156.28.25", 7123]]
+	"""["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], 
 		["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], 
-		["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123]]
+		["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123]] """
 	root = et.fromstring(data) 
 	i = 0
 	j = 0
@@ -49,16 +50,6 @@ def clientDiag(data):
 	else:
 		myLogger.info('result of the intelligent model is not cancer')
 	return verdict
-	# verdict = getVerdict(diagnosis)
-	# if verdict:
-	# 	myDiag = 2
-	# else:
-	# 	myDiag = 4
-	# for patient in root:
-	# 	patient.find('class').text = str(myDiag)
-	
-
-	
 
 
 def getVerdict(diagnosis):

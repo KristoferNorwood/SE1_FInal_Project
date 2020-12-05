@@ -9,7 +9,7 @@ def diagnose(data):
 	for patient in root: # Patients in Dataset
 		print(patient.tag + " " + patient.get("id"))
 		for attributes in patient: # Patient cancer attributes
-			print(attributes.tag + " " + attributes.text) 
+			# print(attributes.tag + " " + attributes.text) 
 	diagnosis = random.randrange(2, 6, 2)
 	print("\nDiagnosing patient \n")
 	return diagnosis
