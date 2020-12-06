@@ -28,6 +28,18 @@ class PopUpMessage:
 		B1 = ttk.Button(popup, text="Understood", command = popup.destroy)
 		B1.pack(expand=1)
 		popup.mainloop()
+	
+	@staticmethod
+	def errorMsg(msg, message_size="450x100"):
+		popup = Tk()
+		popup.wm_title("Error")
+		popup.geometry(message_size)
+		label = ttk.Label(popup, text=msg, font=("Helvetica", 10))
+		label.config(anchor="center")
+		label.pack(side="top", fill="x", pady=10)
+		B1 = ttk.Button(popup, text="Understood", command = popup.destroy)
+		B1.pack(expand=1)
+		popup.mainloop()
 
 class guiApplication(Frame):
 	def __init__(self, parent):
@@ -47,10 +59,8 @@ class guiApplication(Frame):
 		self.bland_chromatin = StringVar()
 		self.normal_nucleoli = StringVar()
 		self.mitoses = StringVar()
-		self.cancer_class = StringVar()
 
 		self.initUI()
-		# self.main()
 
 	def initUI(self):
 
@@ -74,8 +84,7 @@ class guiApplication(Frame):
 		self.rowconfigure (7, pad=3)
 		self.rowconfigure (8, pad=3)
 		self.rowconfigure (9, pad=3)
-		self.rowconfigure (10, pad=3)
-		self.rowconfigure (11, pad=30)
+		self.rowconfigure (10, pad=30)
 
 		# Patient ID Label
 		id_text = Label(self,text="id: ", font="Mono 10 bold")
@@ -155,95 +164,56 @@ class guiApplication(Frame):
 		# mitoses form
 		mitoses_form = Entry(self,width=30,textvariable=self.mitoses, font="Mono 10 bold")
 		mitoses_form.grid(row=9, column = 1)
-		
-		# cancer_class_text
-		cancer_class_text = Label(self, text="class: ", font="Mono 10 bold")
-		cancer_class_text.grid(row=10, column = 0, sticky=W)
-		
-		# cancer_class form
-		cancer_class_form = Entry(self,width=30,textvariable=self.cancer_class, font="Mono 10 bold")
-		cancer_class_form.grid(row=10, column = 1)
 
 		# create OK button
 		button1 = Button (self, text="OK", command=self.onOK )
-		button1.grid(row = 11,column=0,sticky=E)
+		button1.grid(row = 10,column=0,sticky=E)
 
 		# create Cancel button
 		button2 = Button (self, text="Cancel", command=self.onCancel )
-		button2.grid(row = 11,column=1,sticky=E)
+		button2.grid(row = 10,column=1,sticky=E)
 
 	def onOK(self):
+		errorsFound = False
 
 		# dataset root element
 		dataset_root = et.Element('Dataset')
-		
 		# patient root element
 		patient_root = et.SubElement(dataset_root, 'Patient')
+		# validate error message
+		if ( (self.id.get() == '' or not self.id.get().isdigit() ) and not errorsFound):
+			PopUpMessage.errorMsg("Input a numeric Patient value")
+			errorsFound = True
+		# Values for patient id
 		patient_root.set('id', self.id.get())
 
-		# Subtag Clump_thickness inside of root element Patient
-		clump_thickness_elem = et.SubElement(patient_root, 'clump_thickness')
-		# Values for subtag clump_thickness
-		clump_thickness_elem.text = self.clump_thickness.get()
 
-		# Subtag uniformity_cell_size inside of root element Patient
-		uniformity_cell_size_elem = et.SubElement(patient_root, 'uniformity_cell_size')
-		# Values for uniformity_cell_size
-		uniformity_cell_size_elem.text = self.uniformity_cell_size.get()
-
-		# Subtag uniformity_cell_shape inside of root element Patient
-		uniformity_cell_shape_elem = et.SubElement(patient_root, 'uniformity_cell_shape')
-		# Values for uniformity_cell_shape
-		uniformity_cell_shape_elem.text = self.uniformity_cell_shape.get()
-
-		# Subtag marginal_adhesion inside of root element Patient
-		marginal_adhesion_elem = et.SubElement(patient_root, 'marginal_adhesion')
-		# Values for marginal_adhesion
-		marginal_adhesion_elem.text = self.marginal_adhesion.get()
-
-		# Subtag single_epithelial_cell_size inside of root element Patient
-		single_epithelial_cell_size_elem = et.SubElement(patient_root, 'single_epithelial_cell_size')
-		# Values for single_epithelial_cell_size
-		single_epithelial_cell_size_elem.text = self.single_epithelial_cell_size.get()
-
-		# Subtag bare_nuclei inside of root element Patient
-		bare_nuclei_elem = et.SubElement(patient_root, 'bare_nuclei')
-		# Values for bare_nuclei
-		bare_nuclei_elem.text = self.bare_nuclei.get()
-
-		# Subtag bland_chromatin inside of root element Patient
-		bland_chromatin_elem = et.SubElement(patient_root, 'bland_chromatin')
-		# Values for bland_chromatin
-		bland_chromatin_elem.text = self.bland_chromatin.get()
-
-		# Subtag normal_nucleoli inside of root element Patient
-		normal_nucleoli_elem = et.SubElement(patient_root, 'normal_nucleoli')
-		# Values for normal_nucleoli
-		normal_nucleoli_elem.text = self.normal_nucleoli.get()
-
-		# Subtag mitoses inside of root element Patient
-		mitoses_elem = et.SubElement(patient_root, 'mitoses')
-		# Values for mitoses
-		mitoses_elem.text = self.mitoses.get()
-
-		# Subtag cancer_class inside of root element Patient
-		cancer_class_elem = et.SubElement(patient_root, 'class')
-		# Values for cancer_class
-		cancer_class_elem.text = self.cancer_class.get()
+		# for item in app.grid_slaves():
+		for i in range(1,10):
+			current_widget = self.grid_slaves(i, 0)[0]
+			stripped_label = current_widget.cget("text").strip(" :")
+			final_label = stripped_label.replace(" ", "_")
+			input_val = self.grid_slaves(i, 1)[0].get()
+			if (input_val == "" or not input_val.isdigit() ):
+				PopUpMessage.errorMsg("Input a numeric value for " + final_label)
+				errorsFound = True
+				break
+			else:
+				et.SubElement(patient_root, str(final_label) ).text = input_val
 		
-		# Clear form after confirmation
-		self.id.set("")
-		self.clump_thickness.set("")
-		self.uniformity_cell_size.set("")
-		self.uniformity_cell_size.set("")
-		self.uniformity_cell_shape.set("")
-		self.marginal_adhesion.set("")
-		self.single_epithelial_cell_size.set("")
-		self.bare_nuclei.set("")
-		self.bland_chromatin.set("")
-		self.normal_nucleoli.set("")
-		self.mitoses.set("")
-		self.cancer_class.set("")
+		if not errorsFound:
+			# Clear form after confirmation
+			self.id.set("")
+			self.clump_thickness.set("")
+			self.uniformity_cell_size.set("")
+			self.uniformity_cell_size.set("")
+			self.uniformity_cell_shape.set("")
+			self.marginal_adhesion.set("")
+			self.single_epithelial_cell_size.set("")
+			self.bare_nuclei.set("")
+			self.bland_chromatin.set("")
+			self.normal_nucleoli.set("")
+			self.mitoses.set("")
 
 		patient_xml = et.tostring(dataset_root)
 		with open("test.xml","wb") as f:
@@ -255,31 +225,14 @@ class guiApplication(Frame):
 
    
 	def onCancel(self):
-
 		# exit program
 		self.quit()
 
-# def get_logger(name):
-#     log_format = '%(asctime)s  %(name)8s  %(levelname)5s  %(message)s'
-#     logging.basicConfig(level=logging.INFO,
-#                         format=log_format,
-#                         filename='PinkRayLog.log',
-#                         filemode='a')
-#     console = logging.StreamHandler()
-#     console.setLevel(logging.INFO)
-#     console.setFormatter(logging.Formatter(log_format))
-#     logging.getLogger(name).addHandler(console)
-#     return logging.getLogger(name)
 
 def mainer():
 	myLogger = logging.getLogger('myLogger')
 	myLogger.info('GUI Started')
 	root = Tk()
 	root.geometry("400x320")
-	font = tkFont.Font(family="Helvetica",weight="bold")
 	app = guiApplication(root)
 	app.mainloop()
-
-
-# if __name__ == '__main__':
-# 	main ()
