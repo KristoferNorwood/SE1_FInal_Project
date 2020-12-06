@@ -6,11 +6,13 @@ import logging
 from typing import List
 
 def startServer():
+	myLogger = logging.getLogger('myLogger')
+	myLogger.info('Server should start about now')
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 	server_address = ('192.168.0.43', 7123)
 	s.bind(server_address)
-	myLogger = logging.getLogger('myLogger')
+	
 
 	print('Socket is listening...\n')
 	#Every connection starts a new thread and the server continues to listen for new connections after each thread is started

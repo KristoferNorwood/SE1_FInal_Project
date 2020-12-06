@@ -1,18 +1,28 @@
 #!/usr/bin/python
-import guiApplication
+import app
 import pinkServer
 import logging
-import pinkServer
 from typing import List
 import threading
+from tkinter import Tk, StringVar, BOTH, W, E, ttk
 
-class clientThreader(threading.Thread):
+def get_logger(name):
+    log_format = '%(asctime)s  %(name)8s  %(levelname)5s  %(message)s'
+    logging.basicConfig(level=logging.INFO,
+                        format=log_format,
+                        filename='PinkRayLog.log',
+                        filemode='a')
+    console = logging.StreamHandler()
+    console.setLevel(logging.INFO)
+    console.setFormatter(logging.Formatter(log_format))
+    logging.getLogger(name).addHandler(console)
+    return logging.getLogger(name)
 
-    def __init__(self):
-        threading.Thread.__init__(self)
-
-    def run(self):
-        myLogger = logging.getLogger('myLogger')
-        # myLogger.info('Server Started')
-        pinkServer.startServer
-        return
+myLogger = get_logger('myLogger')
+myLogger.info('Pink Ray Ready to Serve')
+newThread2 = threading.Thread(target=pinkServer.startServer, args=())
+newThread = threading.Thread(target=app.mainer, args=())
+newThread.start()
+newThread2.start()
+newThread.join()
+newThread2.join

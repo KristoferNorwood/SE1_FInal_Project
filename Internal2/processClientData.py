@@ -42,6 +42,10 @@ def clientDiag(data):
 			s.close()
 			break
 	myDiag = intelligentModel(data)
+	if(myDiag == 4):
+		myLogger.info('Intelligent model diagnosis for Client is cancer')
+	else:
+		myLogger.info('Intelligent model diagnosis for Client is cancer')
 	diagnosis.insert(12, myDiag)
 	verdict = getVerdict(diagnosis)
 	if(verdict):
@@ -56,10 +60,6 @@ def clientDiag(data):
 	# 	myDiag = 4
 	# for patient in root:
 	# 	patient.find('class').text = str(myDiag)
-	
-
-	
-
 
 def getVerdict(diagnosis):
 	vote = 0

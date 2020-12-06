@@ -9,7 +9,7 @@ from typing import List
 import pinkServer
 import processClientData
 import logging
-import pinkRay
+import pinkServer
 
 
 class PopUpMessage:
@@ -259,31 +259,27 @@ class guiApplication(Frame):
 		# exit program
 		self.quit()
 
-def get_logger(name):
-    log_format = '%(asctime)s  %(name)8s  %(levelname)5s  %(message)s'
-    logging.basicConfig(level=logging.INFO,
-                        format=log_format,
-                        filename='PinkRayLog.log',
-                        filemode='a')
-    console = logging.StreamHandler()
-    console.setLevel(logging.INFO)
-    console.setFormatter(logging.Formatter(log_format))
-    logging.getLogger(name).addHandler(console)
-    return logging.getLogger(name)
+# def get_logger(name):
+#     log_format = '%(asctime)s  %(name)8s  %(levelname)5s  %(message)s'
+#     logging.basicConfig(level=logging.INFO,
+#                         format=log_format,
+#                         filename='PinkRayLog.log',
+#                         filemode='a')
+#     console = logging.StreamHandler()
+#     console.setLevel(logging.INFO)
+#     console.setFormatter(logging.Formatter(log_format))
+#     logging.getLogger(name).addHandler(console)
+#     return logging.getLogger(name)
 
-def main():
-	myLogger = get_logger('myLogger')
-	pinkServer.startServer()
-	myLogger.info('Pink Ray Ready to Serve')
+def mainer():
+	myLogger = logging.getLogger('myLogger')
+	myLogger.info('GUI Started')
 	root = Tk()
-	font = tkFont.Font(family="Helvetica",weight="bold")
 	root.geometry("400x320")
-	newThread = pinkRay
-	newThread.start()
-	newThread.join()
+	font = tkFont.Font(family="Helvetica",weight="bold")
 	app = guiApplication(root)
-	root.mainloop()
+	app.mainloop()
 
 
-if __name__ == '__main__':
-	main ()
+# if __name__ == '__main__':
+# 	main ()
