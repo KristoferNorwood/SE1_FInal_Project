@@ -7,18 +7,6 @@ from lxml import etree as et
 from typing import List
 import logging
 
-# def __init__(self, data, inStream):
-# 	super().__init__()
-# 	self.data = data
-# 	self.inStream: socket = inStream
-# 	self.diagnosis
-# 	self.intelligentModel : intelligentModel
-# 	self.myRoot
-# 	self.verdict
-# 	self.root
-# 	self.sendDiagReq()
-# 	self.diagnose()
-
 def clientDiag(data):
 	myLogger = logging.getLogger('myLogger')
 	friendServers = [["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], ["71.156.28.25", 7123], 

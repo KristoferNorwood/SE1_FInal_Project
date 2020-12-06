@@ -24,12 +24,7 @@ def startServer():
 		newthread.join()
 	myLogger.info('Server shutdown from server outside while')
 	return
-# def processData(self, aThread : ClientThread, aInStream : socket, aAddress : socket) -> None:
-# 	pass
 
-# def __init__(self):
-# 	self._unnamed_logging_ : logging = None
-# 	self.startServer()
 
 		
 

@@ -7,9 +7,7 @@ import logging
 
 
 def diagnose(data, inStream, address):
-	#replace with intelligentModel.diagnose or 
-	#whatever the class above the intelliImplementor is
-	# diagnosis = intelligentModel(data)
+	
 	myLogger = logging.getLogger('myLogger')
 	print("Printing data received from the other Client/Servers : \n")
 	root = et.fromstring(data) 
