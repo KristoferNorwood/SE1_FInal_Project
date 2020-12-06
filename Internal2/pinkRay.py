@@ -19,10 +19,11 @@ def get_logger(name):
     return logging.getLogger(name)
 
 myLogger = get_logger('myLogger')
-myLogger.info('Pink Ray Ready to Serve')
+
 newThread2 = threading.Thread(target=pinkServer.startServer, args=())
 newThread = threading.Thread(target=app.mainer, args=())
 newThread.start()
 newThread2.start()
 newThread.join()
 newThread2.join()
+myLogger.info('Server Shut Down')

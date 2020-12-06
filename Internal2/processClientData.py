@@ -45,13 +45,13 @@ def clientDiag(data):
 	if(myDiag == 4):
 		myLogger.info('Intelligent model diagnosis for Client is cancer')
 	else:
-		myLogger.info('Intelligent model diagnosis for Client is cancer')
+		myLogger.info('Intelligent model diagnosis for Client is not cancer')
 	diagnosis.insert(12, myDiag)
 	verdict = getVerdict(diagnosis)
 	if(verdict):
-		myLogger.info('result of intelligent model is cancer')
+		myLogger.info('Full diagnosis of client is cancer')
 	else:
-		myLogger.info('result of the intelligent model is not cancer')
+		myLogger.info('Full diagnosis of client is non-cancerous')
 	return verdict
 	# verdict = getVerdict(diagnosis)
 	# if verdict:

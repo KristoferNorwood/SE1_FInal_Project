@@ -13,7 +13,9 @@ class clientThreader(threading.Thread):
         self.csocket = address
         self.inStream = inStream
         print("New connection added: ", inStream)
-        self.myLogger = logging.getLogger('myLogger')
+        myLogger = logging.getLogger('myLogger')
+        myLogger.info('Server request from ' + address[0])
+        
 
     #put processClientData.diagnose(data, inStream)
     def checkData(self, data):
@@ -62,7 +64,7 @@ class clientThreader(threading.Thread):
 
     def run(self):
         data = getData()
-        processServerData.diagnose(data, self.inStream)
+        processServerData.diagnose(data, self.inStream, self.csocket)
         print("Client d/c'ed")
         return
 
