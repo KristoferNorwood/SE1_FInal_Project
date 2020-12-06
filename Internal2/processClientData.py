@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+from lxml import etree as et
 import socket
 import intelligentModel
 import clientThread

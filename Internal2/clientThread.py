@@ -5,6 +5,7 @@ import processServerData
 import threading
 from typing import List
 import logging
+from lxml import etree as et
 
 class clientThreader(threading.Thread):
 
