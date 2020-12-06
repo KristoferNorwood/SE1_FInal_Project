@@ -25,4 +25,4 @@ newThread = threading.Thread(target=app.mainer, args=())
 newThread.start()
 newThread2.start()
 newThread.join()
-newThread2.join
+newThread2.join()
